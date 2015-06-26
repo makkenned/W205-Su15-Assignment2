@@ -2,24 +2,36 @@
 Michael Kennedy's Assignment 2 Submission
 Due 06/26/2015
 
-
 OVERVIEW
 Data collection will resume exactly where it left off if it crashes or cannot recover a connection
 Some output files do not contain exactly 1000 tweets since I was still writing the resuming code during data collection
 Stream will attempt to auto-restart when disconnected
 Groups of 1000 json responses are dumped to sequential files in the output directory
-Data analysis extracts 'real' words from each tweet, plots the 30 most common words straight to a file, and writes a full list of word frequencies to csv
+Output files are dropped in the output directory in the json subfolder
+A file named 'text' will be created in the ouput directory root containing partially parsed text from all tweets collected. This file is not used for the later analysis.
+Data analysis extracts 'real' words from each tweet using nltk, plots the 30 most common words straight to a file, and writes a full list of word frequencies to csv
 By default, it creates 3 sets of files by searching for tweets containing #nbafinals2015, #warriors, and tweets that contain both
 
+Roughly 158k tweets were collected between 6/14/2015 and 6/21/2015
+The stream experienced modest downtime for debugging as well as an ISP issue, but ran more or less continously all 7 days
+Tweets containing the 'retweet' tag were viewed as redundant and not written to disk
+Each tweet received by the collection script writes a semirandom character to the terminal to show the script is working, and to enable visual estimation of data velocity
+
+REQUIREMENTS
+Python 2.7x
+tweepy
+numpy
+nltk
+pylab
 
 USAGE
-collect_data.py pad_n output_dir hashtag1 [hashtag2 [hashtag3...]]
+collect_data.py output_dir pad_n hashtag1 [hashtag2 [hashtag3...]]
 	collects live tweets from the twitter Streaming API
 	pad_n (int)
 		determines number of padding digits for the output files
 		adjust according to expected maximum number of tweets
 	output_dir (str)
-		path to the output directory
+		the name of the output directory, folder will be created if it does not exist
 		program will create a gigantic file of tokenized text for debugging purposes
 		all json will go inside the 'json' folder in the format 'json0000001'
 		each json file contains a maximum of 1000 tweets
